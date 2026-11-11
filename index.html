@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#53C2EC">
+<title>8660 AFVAL · De Panne & Adinkerke</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Lexend:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#EEF8FB; --surface:#FFFFFF; --surface-2:#DDEFF5; --ink:#18182E; --muted:#5B5B72; --line:#D3E5EB;
+  --sea:#0F7FAA; --flag:#0F7FAA; --flag-ink:#FFFFFF; --blue:#53C2EC; --dune:#E9C46A; --ok:#2E8A5C; --green:#42AF78; --warn:#B7791F; --alert:#C8372D;
+  --display:"Barlow Condensed","Arial Narrow",sans-serif;
+  --body:"Lexend","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --radius:14px; --shadow:0 1px 2px rgba(15,42,51,.06),0 8px 24px rgba(15,42,51,.08);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#100F24; --surface:#1A1937; --surface-2:#232247; --ink:#EEF8FB; --muted:#A9AFC8; --line:#2E2D57;
+  --sea:#7FD3F2; --blue:#53C2EC; --dune:#E9C46A; --ok:#5CC495; --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:blur(12px);border-bottom:3px solid var(--blue)}
+.nav .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.brand{font-family:var(--display);font-weight:900;font-size:1.45rem;text-decoration:none;color:var(--ink)}
+.kicker{font-family:var(--mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--flag);font-weight:600}
+h1,h2,h3{font-family:var(--display);line-height:.95;margin:0;text-transform:uppercase;font-weight:800}
+h1{font-size:clamp(2.8rem,8vw,4.5rem)}
+h2{font-size:clamp(2rem,5vw,3.2rem)}
+.lede{color:var(--muted);max-width:62ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.card h3{font-size:1.5rem;margin-bottom:8px}
+.badge{display:inline-flex;align-items:center;font:600 .7rem var(--mono);letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:4px 9px;background:var(--surface-2)}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 20px;border-radius:999px;border:0;font:700 1rem var(--body);cursor:pointer;text-decoration:none;background:var(--blue);color:#16152C}
+select,button.zone{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font:700 .9rem var(--body);cursor:pointer}
+.zone[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+ul{padding-left:18px}
+footer{margin-top:48px;padding:24px 0;border-top:1px solid var(--line);font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap"><a class="brand" href="/">8660 AFVAL</a></div></nav>
+<div class="wrap">
+<p class="kicker">8660 De Panne · Adinkerke</p>
+<h1>Afvalkalender & sorteergids</h1>
+<p class="lede">Gratis, lokaal en zonder account. Kies je zone (Adinkerke is zone 2), bekijk de regels voor 2026 en sorteer correct. Plaats afval altijd vóór 8u op de ophaaldag.</p>
+
+<div style="margin:28px 0">
+<p class="kicker">Jouw zone</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+<button class="zone" data-z="1" aria-pressed="false">Zone 1 · Zeedijk & centrum</button>
+<button class="zone" data-z="2" aria-pressed="false">Zone 2 · Adinkerke</button>
+<button class="zone" data-z="3" aria-pressed="false">Zone 3</button>
+<button class="zone" data-z="4" aria-pressed="false">Zone 4</button>
+</div>
+<div id="zone-info" class="card" style="margin-top:16px" hidden>
+<h3 id="zone-title"></h3>
+<p id="zone-desc"></p>
+<p><a href="https://www.depanne.be/nl/zones-afvalophaling" target="_blank">Bekijk volledige stratenlijst & download kalender →</a></p>
+</div>
+</div>
+
+<section>
+<h2>Sorteren</h2>
+<div class="grid2" style="margin-top:16px">
+<div class="card"><h3>Restafval</h3><p>€ 0,20 / kg (2026). Tot eind mei 2026 nog zakken mogelijk. Vanaf 1 juni enkel containers of Drop&Go.</p><ul><li>Huisvuil dat niet recycleerbaar is</li><li>Geen PMD, GFT, papier, glas</li></ul></div>
+<div class="card"><h3>GFT</h3><p>€ 0,07 / kg. Groene container. Goed sorteren bespaart veel.</p><ul><li>Groenten, fruit, tuinafval</li><li>Geen vloeistoffen, kattenbak, botten</li></ul></div>
+<div class="card"><h3>PMD</h3><p>Blauwe zak. Plastic, metalen, drankkartons.</p><ul><li>Leeg en plat</li><li>Geen speelgoed of grote stukken</li></ul></div>
+<div class="card"><h3>Papier & karton</h3><p>In doos of gebonden.</p><ul><li>Schone kartons, kranten, folders</li><li>Geen vervuild papier</li></ul></div>
+</div>
+</section>
+
+<section>
+<h2>Belangrijk 2026</h2>
+<div class="card">
+<ul>
+<li>Restafvalzakken: laatste ophaling einde mei 2026. Vanaf 1 juni enkel containers of Drop&Go.</li>
+<li>Containers (40/140/240 L) gratis aanvragen via IVVO.</li>
+<li>Drop&Go: 24/7 ondergrondse punten.</li>
+<li>Recyclagepark: Loskaai 12, De Panne.</li>
+<li>Bij storm: zet afval niet de avond voordien buiten.</li>
+</ul>
+<p style="margin-top:12px"><a class="btn" href="https://www.depanne.be/nl/afvalophaling-en-afvalkalender" target="_blank">Officiële info depanne.be →</a></p>
+</div>
+</section>
+
+<footer>
+<p>8660 AFVAL · Gemaakt in 8660. Bronnen: gemeente De Panne & IVVO. Geen account, alles lokaal. <a href="https://8660-dashboard.vercel.app">Terug naar dashboard</a></p>
+</footer>
+</div>
+<script>
+const zones = {
+  1: {title:"Zone 1 · Zeedijk & centrum De Panne", desc:"August Vermeylenlaan, Zeedijk, Zeelaan, Markt, Nieuwpoortlaan, Vuurtorenplein, Canadezenplein en meer."},
+  2: {title:"Zone 2 · Adinkerke", desc:"Volledige deelgemeente Adinkerke + Kerkstraat 58 en 60. Aparte ophaaldagen."},
+  3: {title:"Zone 3", desc:"Adinkerkelaan, Kerkstraat (meeste nummers), Westhoeklaan, Duinrooslaan, Olmendreef en omliggende straten."},
+  4: {title:"Zone 4", desc:"Ambachtstraat, Koksijdeweg, Koninginnelaan, Sportlaan, Veurnestraat en meer."}
+};
+document.querySelectorAll('.zone').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.zone').forEach(b=>b.setAttribute('aria-pressed','false'));
+    btn.setAttribute('aria-pressed','true');
+    const z=btn.dataset.z;
+    const info=document.getElementById('zone-info');
+    document.getElementById('zone-title').textContent=zones[z].title;
+    document.getElementById('zone-desc').textContent=zones[z].desc;
+    info.hidden=false;
+    localStorage.setItem('8660-afval-zone',z);
+  };
+});
+const saved=localStorage.getItem('8660-afval-zone');
+if(saved) document.querySelector(`[data-z="${saved}"]`)?.click();
+</script>
+</body>
+</html>
